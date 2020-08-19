@@ -1,0 +1,371 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);/*Nossos menus usam LESS para o construtor de menus, mas queremos tornar este tutorial acessível para todos, então vou usar o CSS vanilla desta vez. Eu também não vou incluir todas as opções do menu no tutorial, apenas o tornaria desnecessariamente longo. Primeiro, vamos incluir uma fonte do Google Fonts e usar uma redefinição de folha de estilo visando todos os elementos usados ​​por nosso menu:*/
+#cssmenu,
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul li a,
+#cssmenu #menu-button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  line-height: 1;
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  
+}
+#cssmenu:after,
+#cssmenu>ul:after {/*Usamos a redefinição da folha de estilo para evitar que nossos menus entrem em conflito com outro CSS da página do usuário. Em seguida, o clearfix:*/
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+  
+}
+
+/*Não precisamos do botão que alterna o menu em dispositivos móveis, então vamos ocultá-lo por enquanto:*/
+
+#cssmenu #menu-button {
+    display: none;
+  }
+
+ /*A fonte do menu e a cor de fundo:*/ 
+ #cssmenu {
+    font-family: Montserrat, sans-serif;
+    background: #333333;
+  }
+
+ /*Precisamos dos itens de menu na mesma linha, então vamos colocá-los à esquerda:*/ 
+ #cssmenu>ul>li {
+    float: left;
+  }
+ /*A seguir, definiremos o estilo dos links principais (preenchimento, tipografia e transições):*/ 
+
+
+ #cssmenu>ul>li>a {
+    padding: 17px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #dddddd;
+    font-weight: 700;
+    text-transform: uppercase;
+    -webkit-transition: color .25s ease;
+    -moz-transition: color .25s ease;
+    transition: color .25s ease;
+  }
+
+  /*Os links mudam de cor ao passar o mouse, indo de cinza claro para branco:*/
+
+#cssmenu.small-screen .submenu-button:after {
+    position: absolute;
+    top: 22px;
+    right: 19px;
+    width: 8px;
+    height: 2px;
+    display: block;
+    background: #dddddd;
+    content: '';
+  }
+  #cssmenu>ul>li:hover>a {
+    color: #ffffff;
+  }
+  /*Os links que possuem submenus precisam de espaço extra à direita do indicador do submenu. Os itens da lista que contêm esses links têm uma classe chamada has-sub que é adicionada pelo plugin jQuery, mas também pode ser adicionada pelo construtor de menu.:*/
+
+  #cssmenu>ul>li.has-sub>a {
+    padding-right: 30px;
+  }
+
+  /*Agora vamos criar o indicador do submenu, que será um símbolo "+". Ao passar o mouse, o submenu será exibido e o indicador se tornará uma linha horizontal / um único traço. Vamos criar a linha horizontal primeiro com um pseudoelemento posterior . A linha terá 8px de largura e 2px de altura e deve ter a mesma cor dos links.*/
+
+  #cssmenu ul>li.has-sub>a:after {
+    position: absolute;
+    top: 22px;
+    right: 11px;
+    width: 8px;
+    height: 2px;
+    display: block;
+    background: #dddddd;
+    content: '';
+    -webkit-transition: background .25s ease;
+    -moz-transition: background .25s ease;
+    transition: background .25s ease;
+  }
+  /*Ao passar o mouse, a linha muda de cor, assim como os links do menu:*/
+  #cssmenu>ul>li.has-sub:hover>a:after,
+#cssmenu>ul>li.has-sub>a:hover:after {
+  background: #ffffff;
+}
+/*A linha vertical é a próxima. Usaremos um pseudoelemento antes desta vez:*/
+#cssmenu ul>li.has-sub>a:before {
+    position: absolute;
+    top: 19px;
+    right: 14px;
+    display: block;
+    width: 2px;
+    height: 8px;
+    background: #dddddd;
+    content: '';
+    -webkit-transition: all .25s ease;
+    -moz-transition: all .25s ease;
+    -ms-transition: all .25s ease;
+    -o-transition: all .25s ease;
+    transition: all .25s ease;
+  }
+
+  /*Ao passar o mouse, a linha vertical desaparecerá. Faremos isso tornando sua altura 0. Também modificaremos sua posição vertical para criar um bom efeito.*/
+
+  #cssmenu ul>li.has-sub:hover>a:before,
+#cssmenu ul>li.has-sub>a:hover:before {
+  top: 23px;
+  height: 0;
+}
+
+/*O menu principal está concluído, é hora de passar para os submenus. Eles devem estar ocultos por padrão:*/
+#cssmenu ul ul {
+    position: absolute;
+    left: -9999px;
+  }
+
+ /*Eles serão exibidos ao passar o mouse:*/ 
+ #cssmenu li:hover>ul {
+    left: auto;
+  }
+  /*Os submenus de segundo nível serão exibidos à direita de seus pais. Usaremos margem esquerda para empurrá-los para a direita:*/
+  #cssmenu ul ul ul {
+    margin-left: 100%;
+    top: 0;
+  }
+  /*Agora vamos dar aos submenus um bom efeito de expansão quando eles forem exibidos. Primeiro, damos a altura 0 aos elementos da lista dos submenus. Em seguida, usamos as transições CSS e as trazemos à altura normal, que é 35px.*/
+  #cssmenu ul ul li {
+    height: 0;
+    -webkit-transition: height .25s ease;
+    -moz-transition: height .25s ease;
+    transition: height .25s ease;
+  }
+  
+  #cssmenu li:hover>ul>li {
+    height: 35px;
+  }
+  /*Os links do submenu ainda não foram estilizados, então vamos fazer isso. Tamanho de fonte e altura menores do que os links principais, o mesmo fundo e cor de texto e uma borda inferior cinza semi-opaca . Estamos usando este cinza médio semi-opaco porque parece bom e consistente, independentemente da cor de fundo que você escolher no construtor de menu.*/
+  #cssmenu ul ul li a {
+    width: 170px;
+    padding: 11px 15px;
+    border-bottom: 1px solid rgba(150, 150, 150, 0.15);
+    font-size: 12px;
+    text-decoration: none;
+    color: #dddddd;
+    font-weight: 400;
+    background: #333333;
+  }
+  /*Ao passar o mouse, os links do submenu mudarão de cor de texto, assim como os links principais. Além disso, o último link do submenu não precisa da borda inferior */
+
+  #cssmenu ul ul li:last-child>a,
+#cssmenu ul ul li.last-item>a {
+  border-bottom: 0;
+}
+
+#cssmenu ul ul li:hover>a,
+#cssmenu ul ul li a:hover {
+  color: #ffffff;
+}
+/*Como você pode ver, os links de submenu também podem ter indicadores de submenu que herdaram dos links principais, mas não estão posicionados corretamente. Eles também não mudam de cor ao pairar. Você provavelmente está se perguntando por que eles não herdaram a mudança de cor flutuante dos links principais. Isso porque em nosso construtor de menu os links principais e os links de submenu podem ter cores e cores flutuantes diferentes, então temos que ter certeza de que os indicadores correspondem a cada uma dessas cores.*/
+
+#cssmenu ul ul li.has-sub>a:after {
+    top: 16px;
+    right: 11px;
+    background: #dddddd;
+  }
+  
+  #cssmenu ul ul>li.has-sub:hover>a:after,
+  #cssmenu ul ul>li.has-sub>a:hover:after {
+    background: #ffffff;
+  }
+  
+  #cssmenu ul ul li.has-sub>a:before {
+    top: 13px;
+    right: 14px;
+    background: #dddddd;
+  }
+  
+  #cssmenu ul ul>li.has-sub:hover>a:before {
+    top: 17px;
+    height: 0;
+  }
+  /*O design e a funcionalidade para telas grandes foram concluídos, agora vamos nos concentrar no design móvel. Os menus feitos para trabalhar com nosso plugin jQuery não usam consultas de mídia. Em dispositivos móveis, o plug-in adiciona uma classe de tela pequena à div cssmenu , portanto, usaremos essa classe para definir o estilo do menu.
+
+Primeiro, precisamos tornar todo o menu fluido, dando-lhes 100% de largura. Além disso, mudaremos de um menu horizontal para um vertical removendo os flutuadores e removeremos a exibição de foco e os efeitos.*/
+#cssmenu.small-screen {
+    width: 100%;
+  }
+  
+  #cssmenu.small-screen ul {
+    width: 100%;
+    display: none;
+  }
+  
+  #cssmenu.small-screen ul li {
+    width: 100%;
+    border-top: 1px solid rgba(120, 120, 120, 0.2);
+  }
+  
+  #cssmenu.small-screen ul ul li,
+  #cssmenu.small-screen li:hover>ul>li {
+    height: auto;
+  }
+  
+  #cssmenu.small-screen ul li a,
+  #cssmenu.small-screen ul ul li a {
+    width: 100%;
+    border-bottom: 0;
+  }
+  
+  #cssmenu.small-screen>ul>li {
+    float: none;
+  }
+  
+  #cssmenu.small-screen ul ul,
+  #cssmenu.small-screen ul ul ul {
+    position: relative;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+  }
+  /*Se você redimensionar sua janela, não verá nada no momento, porque o botão que alterna o menu está oculto. Exibiremos e estilizaremos o botão em um momento, mas até então adicionaremos algum recuo para os links do submenu e ocultaremos os indicadores do submenu.*/
+  #cssmenu.small-screen ul ul li a {
+    padding-left: 25px;
+  }
+  
+  #cssmenu.small-screen ul ul ul li a {
+    padding-left: 35px;
+  }
+  
+  #cssmenu.small-screen>ul>li.has-sub>a:after,
+  #cssmenu.small-screen>ul>li.has-sub>a:before,
+  #cssmenu.small-screen ul ul>li.has-sub>a:after,
+  #cssmenu.small-screen ul ul>li.has-sub>a:before {
+    display: none;
+  }
+  /*Agora vamos definir o estilo do botão de menu. Usaremos o mesmo preenchimento e tipografia dos links do menu:*/
+  #cssmenu.small-screen #menu-button {
+    display: block;
+    padding: 17px;
+    color: #dddddd;
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  /*Se você redimensionar a janela para um tamanho menor que 768 px ou testar o menu em um dispositivo móvel, agora você pode abrir e fechar o menu. Os submenus ainda estão inacessíveis porque terão seus próprios botões de alternância. O botão do menu precisa de um ícone e vamos usar o chamado 'ícone do hambúrguer'. Vamos criá-lo usando dois pseudoelementos. O pseudoelemento posterior exibirá duas linhas horizontais do ícone usando bordas e o pseudoelemento anterior exibirá a terceira linha horizontal.*/
+  #cssmenu.small-screen #menu-button:after {
+    position: absolute;
+    top: 22px;
+    right: 17px;
+    display: block;
+    height: 4px;
+    width: 20px;
+    border-top: 2px solid #dddddd;
+    border-bottom: 2px solid #dddddd;
+    content: '';
+  }
+  
+  #cssmenu.small-screen #menu-button:before {
+    position: absolute;
+    top: 16px;
+    right: 17px;
+    display: block;
+    height: 2px;
+    width: 20px;
+    background: #dddddd;
+    content: '';
+  }
+  /*Quando o menu é aberto, o botão de menu obtém uma classe chamada menu aberto . Usaremos essa classe para transformar o ícone do menu em um símbolo 'x'. Usaremos o mesmo pseudoelemento, mas desta vez removeremos as bordas do depois , usando apenas seu corpo, então iremos girar ambos em 45 graus em direções opostas e posicioná-los para formar o símbolo.*/
+  #cssmenu.small-screen #menu-button.menu-opened:after {
+    top: 23px;
+    border: 0;
+    height: 2px;
+    width: 15px;
+    background: #ffffff;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  
+  #cssmenu.small-screen #menu-button.menu-opened:before {
+    top: 23px;
+    background: #ffffff;
+    width: 15px;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  /*O plugin jQuery adiciona um elemento span com a classe de botão de submenu para cada submenu. Isso permitirá que o submenu seja exibido / oculto quando eles forem clicados. Eles são exibidos no lado direito de cada link pai. Além disso, se o link pai já for um link de submenu e indicar um submenu de segundo nível, o botão do submenu será menor.*/
+  #cssmenu.small-screen .submenu-button {
+    position: absolute;
+    z-index: 99;
+    right: 0;
+    top: 0;
+    display: block;
+    border-left: 1px solid rgba(120, 120, 120, 0.2);
+    height: 46px;
+    width: 46px;
+    cursor: pointer;
+  }
+  
+  #cssmenu.small-screen ul ul .submenu-button {
+    height: 34px;
+    width: 34px;
+  }
+  /*Quando o submenu é aberto, o plug-in adiciona uma classe aberta no submenu ao período. Vamos usá-lo para alterar o plano de fundo do período:*/
+  #cssmenu.small-screen .submenu-button.submenu-opened {
+    background: #262626;
+  }
+  /*Agora vamos adicionar ícones aos botões do submenu. Vamos usar o mesmo símbolo que o indicador de submenu na versão do menu da área de trabalho:*/
+  #cssmenu.small-screen .submenu-button:after {
+    position: absolute;
+    top: 22px;
+    right: 19px;
+    width: 8px;
+    height: 2px;
+    display: block;
+    background: #dddddd;
+    content: '';
+  }
+  
+  #cssmenu.small-screen ul ul .submenu-button:after {
+    top: 15px;
+    right: 13px;
+  }
+  
+  #cssmenu.small-screen .submenu-button.submenu-opened:after {
+    background: #ffffff;
+  }
+  
+  #cssmenu.small-screen .submenu-button:before {
+    position: absolute;
+    top: 19px;
+    right: 22px;
+    display: block;
+    width: 2px;
+    height: 8px;
+    background: #dddddd;
+    content: '';
+  }
+  
+  #cssmenu.small-screen ul ul .submenu-button:before {
+    top: 12px;
+    right: 16px;
+  }
+  
+  #cssmenu.small-screen .submenu-button.submenu-opened:before {
+    display: none;
+  }

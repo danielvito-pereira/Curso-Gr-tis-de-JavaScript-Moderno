@@ -2,5 +2,14 @@ div {
     display: block;
     background-color: rgb(177, 27, 27);
     margin: 1px;
-    text-align: center;
+    text-align: justify;
+    width: auto;
+    height: 150px;
+}
+
+.menu li {
+    display: grid;
+    background-color: blue;
+    width: 100%;
+    height: 150px;
 }
