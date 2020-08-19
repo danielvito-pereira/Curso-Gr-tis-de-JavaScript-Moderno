@@ -1,15 +1,17 @@
-div {
-    display: block;
-    background-color: rgb(177, 27, 27);
-    margin: 1px;
+.a,
+.c,.d,.e,.f {
+    display: line block;
+
+    margin: 0px;
     text-align: justify;
     width: auto;
-    height: 150px;
+    height: 1520px;
 }
-
-.menu li {
-    display: grid;
-    background-color: blue;
-    width: 100%;
-    height: 150px;
+.aulas {
+    margin: 0px;
+    text-align: justify;
+    text-decoration: none;
+    width: auto;
+    height: 1520px;
+    background-color: rgb(110, 110, 110);
 }
